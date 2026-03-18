@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | Unit Prefix</title>
+  <meta name="description" content="Convert between metric prefixes like milli, micro, nano, and kilo - OhmKit Engineering Toolkit.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | Unit Prefix">
+  <meta property="og:description" content="Convert between metric prefixes like milli, micro, nano, and kilo - OhmKit Engineering Toolkit.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | Unit Prefix">
+  <meta property="twitter:description" content="Convert between metric prefixes like milli, micro, nano, and kilo - OhmKit Engineering Toolkit.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .tool-container {
+      padding: var(--spacing-lg);
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .input-row {
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <div class="tool-container animate-slide">
+        <div class="card" style="margin-bottom: var(--spacing-xl); cursor: default;">
+          <p style="color: var(--text-muted); font-size: 14px;">Convert values between engineering prefixes (milli, micro, nano, pico, etc.).</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Value and Prefix</label>
+          <div class="input-row">
+            <input type="number" id="valInput" class="input-field" placeholder="e.g. 1" step="any" style="flex: 2;">
+            <select id="prefixSelect" class="input-field" style="flex: 1; cursor: pointer;">
+              <option value="1e12">Tera (T)</option>
+              <option value="1e9">Giga (G)</option>
+              <option value="1e6">Mega (M)</option>
+              <option value="1e3">kilo (k)</option>
+              <option value="1" selected>None (1)</option>
+              <option value="1e-3">milli (m)</option>
+              <option value="1e-6">micro (μ)</option>
+              <option value="1e-9">nano (n)</option>
+              <option value="1e-12">pico (p)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+          <button class="btn btn-outline" onclick="clearFields()" style="flex:1;">Clear</button>
+          <button class="btn btn-primary" onclick="calculatePrefixes()" style="flex:2;">Convert All</button>
+        </div>
+
+        <div class="result-container" style="max-height: 400px; overflow-y: auto; padding-right: 5px;">
+          <div class="result-header">Results</div>
+          <div class="result-row"><span>Tera (T)</span><span class="result-value" id="resT">-</span></div>
+          <div class="result-row"><span>Giga (G)</span><span class="result-value" id="resG">-</span></div>
+          <div class="result-row"><span>Mega (M)</span><span class="result-value" id="resM">-</span></div>
+          <div class="result-row"><span>kilo (k)</span><span class="result-value" id="resK">-</span></div>
+          <div class="result-row"><span>None</span><span class="result-value" id="resNone">-</span></div>
+          <div class="result-row"><span>milli (m)</span><span class="result-value" id="resm">-</span></div>
+          <div class="result-row"><span>micro (μ)</span><span class="result-value" id="resu">-</span></div>
+          <div class="result-row"><span>nano (n)</span><span class="result-value" id="resn">-</span></div>
+          <div class="result-row"><span>pico (p)</span><span class="result-value" id="resp">-</span></div>
+        </div>
+
+        <div class="formula-container">
+          <div class="formula-title">Engineering Prefixes</div>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
+            Engineering notation uses powers of 10 in multiples of 3 for easier reading of large or small values.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: "Unit Prefix",
+      activeId: 'converters',
+      rootPath: '../../',
+      tool: {
+        id: "unit_prefix",
+        name: "Unit Prefix",
+        url: "MainScreen/Converter/unit_prefix.html",
+        icon: "📏",
+        sub: "milli, micro, nano, pico"
+      }
+    });
+
+    function clearFields() {
+      document.getElementById('valInput').value = '';
+      const ids = ['resT', 'resG', 'resM', 'resK', 'resNone', 'resm', 'resu', 'resn', 'resp'];
+      ids.forEach(id => document.getElementById(id).innerText = '-');
+    }
+
+    function formatEng(val) {
+      if (val === 0) return "0";
+      let absVal = Math.abs(val);
+      if (absVal >= 1e15 || (absVal < 1e-15 && absVal !== 0)) return val.toExponential(4);
+      return parseFloat(val.toPrecision(7)).toString(); 
+    }
+
+    function calculatePrefixes() {
+      const val = parseFloat(document.getElementById('valInput').value);
+      const multiplier = parseFloat(document.getElementById('prefixSelect').value);
+
+      if(isNaN(val)) {
+        alert("Please enter a valid value.");
+        return;
+      }
+
+      const baseVal = val * multiplier;
+
+      document.getElementById('resT').innerText = formatEng(baseVal / 1e12);
+      document.getElementById('resG').innerText = formatEng(baseVal / 1e9);
+      document.getElementById('resM').innerText = formatEng(baseVal / 1e6);
+      document.getElementById('resK').innerText = formatEng(baseVal / 1e3);
+      document.getElementById('resNone').innerText = formatEng(baseVal);
+      document.getElementById('resm').innerText = formatEng(baseVal / 1e-3);
+      document.getElementById('resu').innerText = formatEng(baseVal / 1e-6);
+      document.getElementById('resn').innerText = formatEng(baseVal / 1e-9);
+      document.getElementById('resp').innerText = formatEng(baseVal / 1e-12);
+    }
+  </script>
+</body>
+</html>
+>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | About Us</title>
+  <meta name="description" content="Meet the creators of OhmKit - Professional toolkit for electrical and electronic engineers.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | About Us">
+  <meta property="og:description" content="Meet the creators of OhmKit - Professional toolkit for electrical and electronic engineers.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | About Us">
+  <meta property="twitter:description" content="Meet the creators of OhmKit - Professional toolkit for electrical and electronic engineers.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .about-container {
+      padding: var(--spacing-lg);
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+      text-align: center;
+    }
+    .college-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
+    }
+    .logo-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      margin-bottom: var(--spacing-md);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+    }
+    .college-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .college-sub {
+      color: var(--text-muted);
+      font-size: 16px;
+    }
+    .creators-title {
+      font-family: var(--font-accent);
+      font-size: 24px;
+      text-transform: uppercase;
+      margin-bottom: var(--spacing-lg);
+      color: var(--text-main);
+    }
+    .creator-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+      transition: all var(--transition-fast);
+    }
+    .creator-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+    }
+    .creator-name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: var(--spacing-md);
+    }
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-md);
+    }
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all var(--transition-bounce);
+      border: 1px solid var(--card-border);
+    }
+    .social-btn:hover {
+      background: var(--primary);
+      color: #000;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <div class="about-container animate-slide">
+        <div class="college-card">
+          <img src="../../img/college.jpg" alt="College Logo" class="logo-img">
+          <div class="college-name">کۆلێجی تەکنیکی کەلار</div>
+          <div class="college-sub">Kalar Technical College</div>
+        </div>
+
+        <h3 class="creators-title">Creators</h3>
+
+        <div class="creator-card">
+          <div class="creator-name">Mhamad Wria</div>
+          <div class="social-links">
+            <a href="https://www.facebook.com/mhamad.wria.2025" class="social-btn" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/mhamad.910/" class="social-btn" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@mhamad.abdurahman.091" class="social-btn" target="_blank"><i class="fab fa-tiktok"></i></a>
+          </div>
+        </div>
+
+        <div class="creator-card">
+          <div class="creator-name">Bayad Burhan</div>
+          <div class="social-links">
+            <a href="https://www.facebook.com/bayadb.ahmad" class="social-btn" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/bay_ad_b_ahmad/" class="social-btn" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@bayad322" class="social-btn" target="_blank"><i class="fab fa-tiktok"></i></a>
+          </div>
+        </div>
+
+        <p style="color: var(--text-muted); font-style: italic; font-size: 14px; margin-top: var(--spacing-xl); line-height: 1.6;">
+          Thank you for using OhmKit! We built this toolkit to help students and enthusiasts as a project for Electrical Engineering.
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: "About Us",
+      activeId: 'references',
+      rootPath: '../../',
+      tool: {
+        id: "about_us",
+        name: "About Us",
+        url: "MainScreen/Reference/about_us.html",
+        icon: "ℹ️",
+        sub: "Meet the team"
+      }
+    });
+  </script>
+</body>
+</html>

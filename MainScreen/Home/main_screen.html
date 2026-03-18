@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | Dashboard</title>
+  <meta name="description" content="OhmKit Dashboard - Access all your engineering tools and calculations.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | Dashboard">
+  <meta property="og:description" content="OhmKit Dashboard - Access all your engineering tools and calculations.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | Dashboard">
+  <meta property="twitter:description" content="OhmKit Dashboard - Access all your engineering tools and calculations.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .search-section {
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+    }
+    .search-container {
+      position: relative;
+      max-width: 600px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 14px 20px 14px 45px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    .search-input:focus {
+      background: rgba(var(--p-h), 100%, 50%, 0.05);
+      border-color: var(--primary);
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 18px;
+    }
+    .section-label {
+      font-family: var(--font-cond);
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--primary);
+      margin: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm);
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <!-- Header injected by LayoutManager -->
+      
+      <div class="search-section">
+        <div class="search-container">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="global-search" class="search-input" placeholder="Search formulas, tools, or circuits...">
+        </div>
+      </div>
+
+      <div id="search-results" style="display: none;">
+        <span class="section-label">Search Results</span>
+        <div class="content-grid" id="search-grid"></div>
+      </div>
+
+      <div id="default-view">
+        <div id="favorites-section" style="display: none;">
+          <span class="section-label">Your Favorites</span>
+          <div class="content-grid" id="favorites-grid"></div>
+        </div>
+
+        <span class="section-label">Quick Tools</span>
+        <div class="content-grid">
+          <a href="../calculator/voltage_divider.html" class="card">
+            <span class="card-icon">⚡</span>
+            <span class="card-title">Voltage Divider</span>
+            <span class="card-sub">Vout = Vin × R2/(R1+R2)</span>
+          </a>
+          <a href="resistor_code.html" class="card">
+            <span class="card-icon">🎨</span>
+            <span class="card-title">Resistor Code</span>
+            <span class="card-sub">Color → Ohms Lookup</span>
+          </a>
+          <a href="capacittor_calc.html" class="card">
+            <span class="card-icon">🔌</span>
+            <span class="card-title">Capacitor Calc</span>
+            <span class="card-sub">Series & Parallel Math</span>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    // Initialize Layout
+    LayoutManager.init({
+      title: 'Dashboard',
+      activeId: 'home',
+      rootPath: '../../',
+      icon: '🏠'
+    });
+
+    // --- Favorites Logic ---
+    function loadFavorites() {
+      const favs = JSON.parse(localStorage.getItem('ohmkit_favorites') || '[]');
+      const favSection = document.getElementById('favorites-section');
+      const favGrid = document.getElementById('favorites-grid');
+      
+      if (favs.length > 0) {
+        favSection.style.display = 'block';
+        favGrid.innerHTML = favs.map(f => `
+          <a href="${LayoutManager.rootPath}${f.url}" class="card">
+            <span class="card-icon">${f.icon}</span>
+            <span class="card-title">${f.name}</span>
+            <span class="card-sub">${f.sub}</span>
+          </a>
+        `).join('');
+      } else {
+        favSection.style.display = 'none';
+      }
+    }
+
+    // --- Search Logic ---
+    const ALL_TOOLS = [
+      // Core Calculators
+      { name: "Ohm's Law", sub: "V = I × R", icon: "⚡", url: "MainScreen/calculator/ohms_law.html", keywords: "ohm ohms law voltage current resistance power watts v ir" },
+      { name: "Power Calculator", sub: "P = V × I", icon: "🔋", url: "MainScreen/calculator/power_calc.html", keywords: "power calculator watts voltage current resistance p vi" },
+      { name: "Voltage Divider", sub: "R1, R2 Dividers", icon: "📈", url: "MainScreen/calculator/voltage_divider.html", keywords: "voltage divider vout vin r1 r2 resistor" },
+      { name: "Current Divider", sub: "Parallel Branches", icon: "〰️", url: "MainScreen/calculator/current_divider.html", keywords: "current divider parallel branch resistor ir" },
+      { name: "LED Resistor", sub: "Limit Current", icon: "💡", url: "MainScreen/calculator/LED_resistor.html", keywords: "led resistor diode light drop series limit vs vl" },
+      { name: "Battery Life", sub: "Time Estimates", icon: "🔋", url: "MainScreen/calculator/battery_life.html", keywords: "battery life capacity mah amp hours time duration" },
+      
+      // Converters
+      { name: "AWG to mm/in", sub: "Wire Size", icon: "📏", url: "MainScreen/Converter/AWG_to_mm.html", keywords: "awg wire gauge diameter mm inch convert thickness" },
+      { name: "Unit Prefixes", sub: "Milli, Micro...", icon: "🔢", url: "MainScreen/Converter/unit_prefix.html", keywords: "unit prefix metric decimal milli micro nano pico kilo mega giga tera convert" },
+      { name: "Base Calculator", sub: "HEX / DEC / BIN", icon: "💻", url: "MainScreen/Converter/base_calc.html", keywords: "base radics decimal hex hexadecimal binary octal convert numbers" },
+      { name: "Temperature", sub: "°C / °F / K", icon: "🌡️", url: "MainScreen/Converter/temp_conv.html", keywords: "temperature celsius fahrenheit kelvin convert heat c f k" },
+
+      // Circuit Tools
+      { name: "555 Timer", sub: "Astable Mode", icon: "⏱️", url: "MainScreen/Circuit/555_timer.html", keywords: "555 timer astable oscillation frequency duty cycle" },
+      { name: "Antenna Calculator", sub: "Dipole Length", icon: "📡", url: "MainScreen/Circuit/Antenna_Calc.html", keywords: "antenna calculator length dipole frequency resonance" },
+      { name: "Filter Calculator", sub: "RC/RL Filters", icon: "📉", url: "MainScreen/Circuit/Filter_Calc.html", keywords: "filter calculator low pass high pass rc rl cutoff frequency" },
+      { name: "Op-Amp Calculator", sub: "Gain & Feedback", icon: "🔼", url: "MainScreen/Circuit/OP-AMP_Calc.html", keywords: "op-amp operational amplifier gain inverting non-inverting feedback" },
+      { name: "PCB Trace", sub: "Width & Ampacity", icon: "🛤️", url: "MainScreen/Circuit/PCB_Trace.html", keywords: "pcb trace width current capacity temperature rise copper thickness" },
+      { name: "Reactance", sub: "Capacitive & Inductive", icon: "🧲", url: "MainScreen/Circuit/Reactance.html", keywords: "reactance capacitive inductive impedance frequency capacitor inductor" },
+      { name: "Inductor Calc", sub: "Coil Inductance", icon: "🌀", url: "MainScreen/Circuit/Inductor_Calc.html", keywords: "inductor calculator coil turns air core inductance magnet" },
+
+      // Reference Tools
+      { name: "Symbols", sub: "Component Icons", icon: "🆔", url: "MainScreen/Reference/symbols.html", keywords: "symbols electronic components icons schematics reference" },
+      { name: "Formulas", sub: "Equation Sheet", icon: "📝", url: "MainScreen/Reference/formulas.html", keywords: "formulas equations cheatsheet math electronics reference" },
+      { name: "Datasheets", sub: "Component Docs", icon: "📂", url: "MainScreen/Reference/DataSheet.html", keywords: "datasheets components pdf documentation ic transistor diode" },
+      
+      // Home Screen Quick Tools
+      { name: "Resistor Code", sub: "Color → Ohms", icon: "🎨", url: "MainScreen/Home/resistor_code.html", keywords: "resistor code color bands ohms lookup 4-band 5-band" },
+      { name: "Capacitor Calc", sub: "Series & Parallel", icon: "🔌", url: "MainScreen/Home/capacittor_calc.html", keywords: "capacitor calculator series parallel total capacitance math" }
+    ];
+
+    const searchInput = document.getElementById('global-search');
+    const defaultView = document.getElementById('default-view');
+    const searchResults = document.getElementById('search-results');
+    const searchGrid = document.getElementById('search-grid');
+
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase().trim();
+      if (!term) {
+        defaultView.style.display = 'block';
+        searchResults.style.display = 'none';
+        return;
+      }
+
+      defaultView.style.display = 'none';
+      searchResults.style.display = 'block';
+
+      const results = ALL_TOOLS.filter(t => t.name.toLowerCase().includes(term) || t.keywords.includes(term));
+      
+      searchGrid.innerHTML = results.length > 0 
+        ? results.map(f => `
+            <a href="${LayoutManager.rootPath}${f.url}" class="card">
+              <span class="card-icon">${f.icon}</span>
+              <span class="card-title">${f.name}</span>
+              <span class="card-sub">${f.sub}</span>
+            </a>
+          `).join('')
+        : `<p style="padding: 20px; color: var(--text-dim);">No matching tools found.</p>`;
+    });
+
+    document.addEventListener('DOMContentLoaded', loadFavorites);
+    window.addEventListener('focus', loadFavorites);
+  </script>
+</body>
+</html>

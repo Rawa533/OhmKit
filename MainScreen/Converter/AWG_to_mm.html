@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | AWG to mm</title>
+  <meta name="description" content="Convert American Wire Gauge (AWG) to millimeter and inch - OhmKit Engineering Toolkit.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | AWG to mm">
+  <meta property="og:description" content="Convert American Wire Gauge (AWG) to millimeter and inch - OhmKit Engineering Toolkit.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | AWG to mm">
+  <meta property="twitter:description" content="Convert American Wire Gauge (AWG) to millimeter and inch - OhmKit Engineering Toolkit.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .tool-container {
+      padding: var(--spacing-lg);
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .input-row {
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <div class="tool-container animate-slide">
+        <div class="card" style="margin-bottom: var(--spacing-xl); cursor: default;">
+          <p style="color: var(--text-muted); font-size: 14px;">Convert American Wire Gauge (AWG) to metric units and calculate resistance.</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Wire Size (AWG)</label>
+          <input type="number" id="awgInput" class="input-field" placeholder="e.g. 12" step="1">
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label">Wire Length (Optional for Resistance)</label>
+          <div class="input-row">
+            <input type="number" id="lengthInput" class="input-field" placeholder="e.g. 1" step="any" style="flex: 2;">
+            <select id="unitInput" class="input-field" style="flex: 1; cursor: pointer;">
+              <option value="km">km</option>
+              <option value="m">meter</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+          <button class="btn btn-outline" onclick="clearFields()" style="flex:1;">Clear</button>
+          <button class="btn btn-primary" onclick="calculateAWG()" style="flex:2;">Convert & Calculate</button>
+        </div>
+
+        <div class="result-container">
+          <div class="result-header">Results</div>
+          <div class="result-row">
+            <span class="result-label">Diameter</span>
+            <span class="result-value" id="resDiameter">- mm</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Cross Sectional Area</span>
+            <span class="result-value" id="resArea">- mm²</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Resistance (Copper @20°C)</span>
+            <span class="result-value" id="resResistance">- Ω</span>
+          </div>
+        </div>
+
+        <div class="formula-container">
+          <div class="formula-title">Information</div>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
+            Calculates wire diameter and area from AWG standard. Resistance is approximated using Copper resistivity (ρ ≈ 1.68×10⁻⁸ Ω·m).
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: "AWG to mm",
+      activeId: 'converters',
+      rootPath: '../../',
+      tool: {
+        id: "AWG_to_mm",
+        name: "AWG to mm",
+        url: "MainScreen/Converter/AWG_to_mm.html",
+        icon: "🔌",
+        sub: "Wire size conversion"
+      }
+    });
+
+    function clearFields() {
+      document.getElementById('awgInput').value = '';
+      document.getElementById('lengthInput').value = '';
+      document.getElementById('resDiameter').innerText = '- mm';
+      document.getElementById('resArea').innerText = '- mm²';
+      document.getElementById('resResistance').innerText = '- Ω';
+    }
+
+    function calculateAWG() {
+      const awg = parseFloat(document.getElementById('awgInput').value);
+      const length = parseFloat(document.getElementById('lengthInput').value);
+      const unit = document.getElementById('unitInput').value;
+
+      if(isNaN(awg)) {
+        alert("Please enter a valid AWG wire size.");
+        return;
+      }
+
+      const diameter_mm = 0.127 * Math.pow(92, (36 - awg) / 39);
+      const radius_mm = diameter_mm / 2;
+      const area_mm2 = Math.PI * Math.pow(radius_mm, 2);
+
+      document.getElementById('resDiameter').innerText = diameter_mm.toFixed(4) + " mm";
+      document.getElementById('resArea').innerText = area_mm2.toFixed(4) + " mm²";
+
+      if(!isNaN(length) && length > 0) {
+        let length_m = (unit === "km") ? (length * 1000) : length;
+        let area_m2 = area_mm2 * 1e-6;
+        let R = (1.68e-8) * (length_m / area_m2);
+        document.getElementById('resResistance').innerText = R.toFixed(4) + " Ω";
+      } else {
+        document.getElementById('resResistance').innerText = "- Ω";
+      }
+    }
+  </script>
+</body>
+</html>
+on);
+</script>
+</body>
+</html>

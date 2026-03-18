@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | Op-Amp Calc</title>
+  <meta name="description" content="Calculate operational amplifier gain and feedback resistor values - OhmKit Engineering Toolkit.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | Op-Amp Calc">
+  <meta property="og:description" content="Calculate operational amplifier gain and feedback resistor values - OhmKit Engineering Toolkit.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | Op-Amp Calc">
+  <meta property="twitter:description" content="Calculate operational amplifier gain and feedback resistor values - OhmKit Engineering Toolkit.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .tool-container {
+      padding: var(--spacing-lg);
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .section-title {
+      color: var(--primary);
+      margin-top: var(--spacing-md);
+      margin-bottom: var(--spacing-xs);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <div class="tool-container animate-slide">
+        <div class="card" style="margin-bottom: var(--spacing-xl); cursor: default;">
+          <p style="color: var(--text-muted); font-size: 14px;">Calculate gain and output voltage for inverting and non-inverting op-amp configurations.</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Input Resistor (R1) - Ω</label>
+          <input type="number" id="r1" class="input-field" placeholder="e.g. 1000" step="any">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Feedback Resistor (R2) - Ω</label>
+          <input type="number" id="r2" class="input-field" placeholder="e.g. 10000" step="any">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Input Voltage (Vin) - V</label>
+          <input type="number" id="vin" class="input-field" placeholder="e.g. 5" step="any">
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+          <button class="btn btn-outline" onclick="clearFields()" style="flex:1;">Clear</button>
+          <button class="btn btn-primary" onclick="calculateOpamp()" style="flex:2;">Calculate</button>
+        </div>
+
+        <div class="result-container">
+          <div class="result-header">Results</div>
+          
+          <div class="section-title">Inverting Amplifier</div>
+          <div class="result-row">
+            <span class="result-label">Gain (Av)</span>
+            <span class="result-value" id="invGain">-</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Vout</span>
+            <span class="result-value" id="invVout">- V</span>
+          </div>
+          
+          <div class="section-title" style="margin-top: var(--spacing-lg);">Non-Inverting Amplifier</div>
+          <div class="result-row">
+            <span class="result-label">Gain (Av)</span>
+            <span class="result-value" id="nonInvGain">-</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Vout</span>
+            <span class="result-value" id="nonInvVout">- V</span>
+          </div>
+        </div>
+
+        <div class="formula-container">
+          <div class="formula-title">Formulas Used</div>
+          <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+            <strong>Inverting:</strong> Av = -(R2 / R1)<br>
+            <strong>Non-Inverting:</strong> Av = 1 + (R2 / R1)
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: "Op-Amp Calc",
+      activeId: 'circuits',
+      rootPath: '../../',
+      tool: {
+        id: "opamp_calc",
+        name: "Op-Amp Calc",
+        url: "MainScreen/Circuit/OP-AMP_Calc.html",
+        icon: "🔌",
+        sub: "Inverting & Non-inverting gain"
+      }
+    });
+
+    function clearFields() {
+      document.getElementById('r1').value = '';
+      document.getElementById('r2').value = '';
+      document.getElementById('vin').value = '';
+      document.getElementById('invGain').innerText = '-';
+      document.getElementById('invVout').innerText = '- V';
+      document.getElementById('nonInvGain').innerText = '-';
+      document.getElementById('nonInvVout').innerText = '- V';
+    }
+
+    function calculateOpamp() {
+      const R1 = parseFloat(document.getElementById('r1').value);
+      const R2 = parseFloat(document.getElementById('r2').value);
+      const Vin = parseFloat(document.getElementById('vin').value);
+
+      if(isNaN(R1) || isNaN(R2) || isNaN(Vin) || R1 <= 0) {
+        alert("Please enter valid numbers. Resistors must be > 0.");
+        return;
+      }
+
+      const invGain = - (R2 / R1);
+      const invVout = invGain * Vin;
+      const nonInvGain = 1 + (R2 / R1);
+      const nonInvVout = nonInvGain * Vin;
+
+      document.getElementById('invGain').innerText = invGain.toFixed(2);
+      document.getElementById('invVout').innerText = invVout.toFixed(2) + " V";
+      document.getElementById('nonInvGain').innerText = nonInvGain.toFixed(2);
+      document.getElementById('nonInvVout').innerText = nonInvVout.toFixed(2) + " V";
+    }
+  </script>
+</body>
+</html>

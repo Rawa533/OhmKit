@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | Temp Conv</title>
+  <meta name="description" content="Convert temperatures between Celsius, Fahrenheit, and Kelvin - OhmKit Engineering Toolkit.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | Temp Conv">
+  <meta property="og:description" content="Convert temperatures between Celsius, Fahrenheit, and Kelvin - OhmKit Engineering Toolkit.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | Temp Conv">
+  <meta property="twitter:description" content="Convert temperatures between Celsius, Fahrenheit, and Kelvin - OhmKit Engineering Toolkit.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .tool-container {
+      padding: var(--spacing-lg);
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .input-row {
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <div class="tool-container animate-slide">
+        <div class="card" style="margin-bottom: var(--spacing-xl); cursor: default;">
+          <p style="color: var(--text-muted); font-size: 14px;">Convert temperatures between Celsius, Fahrenheit, and Kelvin scales.</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Temperature to Convert</label>
+          <div class="input-row">
+            <input type="number" id="tempInput" class="input-field" placeholder="e.g. 100" step="any" style="flex: 2;">
+            <select id="fromUnit" class="input-field" style="flex: 1; cursor: pointer;">
+              <option value="C">°C</option>
+              <option value="F">°F</option>
+              <option value="K">K</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label">Convert To</label>
+          <select id="toUnit" class="input-field" style="width: 100%; cursor: pointer;">
+            <option value="C">°C</option>
+            <option value="F" selected>°F</option>
+            <option value="K">K</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+          <button class="btn btn-outline" onclick="clearFields()" style="flex:1;">Clear</button>
+          <button class="btn btn-primary" onclick="calculateTemp()" style="flex:2;">Convert</button>
+        </div>
+
+        <div class="result-container">
+          <div class="result-header">Converted Result</div>
+          <div class="result-row" style="justify-content: center; padding: var(--spacing-lg);">
+            <span class="result-value" id="resTemp" style="font-size: 32px;">-</span>
+          </div>
+        </div>
+
+        <div class="formula-container">
+          <div class="formula-title">Formulas Used</div>
+          <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+            <strong>C to F:</strong> °F = (°C × 9/5) + 32<br>
+            <strong>F to C:</strong> °C = (°F - 32) × 5/9<br>
+            <strong>C to K:</strong> K = °C + 273.15
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: "Temp Conv",
+      activeId: 'converters',
+      rootPath: '../../',
+      tool: {
+        id: "temp_conv",
+        name: "Temp Conv",
+        url: "MainScreen/Converter/temp_conv.html",
+        icon: "🌡️",
+        sub: "°C, °F, K"
+      }
+    });
+
+    function clearFields() {
+      document.getElementById('tempInput').value = '';
+      document.getElementById('resTemp').innerText = '-';
+    }
+
+    function calculateTemp() {
+      const val = parseFloat(document.getElementById('tempInput').value);
+      const from = document.getElementById('fromUnit').value;
+      const to = document.getElementById('toUnit').value;
+
+      if(isNaN(val)) {
+        alert("Please enter a valid temperature.");
+        return;
+      }
+
+      let c = val;
+      if (from === 'F') c = (val - 32) * 5/9;
+      else if (from === 'K') c = val - 273.15;
+
+      let res = c;
+      let unit = '°C';
+      if (to === 'F') {
+        res = (c * 9/5) + 32;
+        unit = '°F';
+      } else if (to === 'K') {
+        res = c + 273.15;
+        unit = 'K';
+      }
+
+      document.getElementById('resTemp').innerText = res.toFixed(2) + " " + unit;
+    }
+  </script>
+</body>
+</html>

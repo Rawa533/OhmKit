@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | Capacitor Calculator</title>
+  <meta name="description" content="Calculate series and parallel capacitance values - OhmKit Engineering Toolkit.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | Capacitor Calculator">
+  <meta property="og:description" content="Calculate series and parallel capacitance values - OhmKit Engineering Toolkit.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | Capacitor Calculator">
+  <meta property="twitter:description" content="Calculate series and parallel capacitance values - OhmKit Engineering Toolkit.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .tool-container {
+      padding: var(--spacing-lg);
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <div class="tool-container animate-slide">
+        <div class="card" style="margin-bottom: var(--spacing-xl); cursor: default;">
+          <p style="color: var(--text-muted); font-size: 14px;">Calculate equivalent capacitance for two capacitors in series or parallel.</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Capacitor 1 (C1) — μF</label>
+          <input type="number" id="inputC1" class="input-field" placeholder="e.g. 10" step="any">
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label">Capacitor 2 (C2) — μF</label>
+          <input type="number" id="inputC2" class="input-field" placeholder="e.g. 22" step="any">
+        </div>
+        
+        <button class="btn btn-primary" onclick="calculate()" style="width: 100%; margin-bottom: var(--spacing-xl);">Calculate Equivalent</button>
+
+        <div class="result-container">
+          <div class="result-header">Calculation Results</div>
+          <div class="result-row">
+            <span class="result-label">Parallel (C1 + C2)</span>
+            <span class="result-value" id="resParallel">-</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Series (C1·C2 / C1+C2)</span>
+            <span class="result-value" id="resSeries">-</span>
+          </div>
+        </div>
+
+        <div class="formula-container">
+          <div class="formula-title">Reference Formulas</div>
+          Cp = C1 + C2 | Cs = (C1 × C2) / (C1 + C2)
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: "Capacitor Calc",
+      activeId: 'home',
+      rootPath: '../../',
+      noFavorite: true,
+      tool: {
+        id: "capacitor_calc",
+        name: "Capacitor Calc",
+        url: "MainScreen/Home/capacittor_calc.html",
+        icon: "🔌",
+        sub: "Series & Parallel"
+      }
+    });
+
+    function calculate() {
+      const c1 = parseFloat(document.getElementById('inputC1').value);
+      const c2 = parseFloat(document.getElementById('inputC2').value);
+
+      if (isNaN(c1) || isNaN(c2)) {
+        alert("Please enter both capacitor values.");
+        return;
+      }
+
+      const parallel = c1 + c2;
+      const series = (c1 * c2) / (c1 + c2);
+
+      document.getElementById('resParallel').innerText = parallel.toFixed(4).replace(/\.?0+$/, '') + ' μF';
+      document.getElementById('resSeries').innerText = series.toFixed(4).replace(/\.?0+$/, '') + ' μF';
+    }
+  </script>
+</body>
+</html>

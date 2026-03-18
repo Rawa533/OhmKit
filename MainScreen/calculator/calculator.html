@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | Calculators</title>
+  <meta name="description" content="Standard scientific and engineering calculators - OhmKit Engineering Toolkit.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | Calculators">
+  <meta property="og:description" content="Standard scientific and engineering calculators - OhmKit Engineering Toolkit.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | Calculators">
+  <meta property="twitter:description" content="Standard scientific and engineering calculators - OhmKit Engineering Toolkit.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <!-- Header with back button injected here -->
+      <div class="content-grid">
+        <a href="ohms_law.html" class="card">
+          <span class="card-icon">⚡</span>
+          <span class="card-title">Ohm's Law</span>
+          <span class="card-sub">Voltage, Current, Resistance</span>
+        </a>
+        <a href="power_calc.html" class="card">
+          <span class="card-icon">🔋</span>
+          <span class="card-title">Power Calc</span>
+          <span class="card-sub">P = V × I (Watts)</span>
+        </a>
+        <a href="voltage_divider.html" class="card">
+          <span class="card-icon">📈</span>
+          <span class="card-title">Voltage Divider</span>
+          <span class="card-sub">Find Vout from R1, R2</span>
+        </a>
+        <a href="current_divider.html" class="card">
+          <span class="card-icon">〰️</span>
+          <span class="card-title">Current Divider</span>
+          <span class="card-sub">Parallel branch current</span>
+        </a>
+        <a href="LED_resistor.html" class="card">
+          <span class="card-icon">💡</span>
+          <span class="card-title">LED Resistor</span>
+          <span class="card-sub">Calculate limiting resistor</span>
+        </a>
+        <a href="battery_life.html" class="card">
+          <span class="card-icon">🔋</span>
+          <span class="card-title">Battery Life</span>
+          <span class="card-sub">Estimate run time</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: 'Calculators',
+      activeId: 'calculators',
+      rootPath: '../../',
+      icon: '🧮'
+    });
+  </script>
+</body>
+</html>

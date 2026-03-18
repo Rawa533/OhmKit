@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | Base Calc</title>
+  <meta name="description" content="Convert numbers between decimal, hexadecimal, binary, and octal - OhmKit Engineering Toolkit.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | Base Calc">
+  <meta property="og:description" content="Convert numbers between decimal, hexadecimal, binary, and octal - OhmKit Engineering Toolkit.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | Base Calc">
+  <meta property="twitter:description" content="Convert numbers between decimal, hexadecimal, binary, and octal - OhmKit Engineering Toolkit.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .tool-container {
+      padding: var(--spacing-lg);
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .input-row {
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+    #numInput {
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <div class="tool-container animate-slide">
+        <div class="card" style="margin-bottom: var(--spacing-xl); cursor: default;">
+          <p style="color: var(--text-muted); font-size: 14px;">Convert numbers between Hexadecimal, Decimal, Octal, and Binary bases.</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Input Value and Base</label>
+          <div class="input-row">
+            <input type="text" id="numInput" class="input-field" placeholder="e.g. 1A" style="flex: 2;">
+            <select id="baseSelect" class="input-field" style="flex: 1; cursor: pointer;">
+              <option value="16">Hex (16)</option>
+              <option value="10" selected>Dec (10)</option>
+              <option value="8">Oct (8)</option>
+              <option value="2">Bin (2)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+          <button class="btn btn-outline" onclick="clearFields()" style="flex:1;">Clear</button>
+          <button class="btn btn-primary" onclick="calculateBases()" style="flex:2;">Convert All</button>
+        </div>
+
+        <div class="result-container">
+          <div class="result-header">Results</div>
+          <div class="result-row">
+            <span class="result-label">Hexadecimal</span>
+            <span class="result-value" id="resHex">-</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Decimal</span>
+            <span class="result-value" id="resDec">-</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Octal</span>
+            <span class="result-value" id="resOct">-</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Binary</span>
+            <span class="result-value" id="resBin">-</span>
+          </div>
+        </div>
+
+        <div class="formula-container">
+          <div class="formula-title">Information</div>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
+            Converts numbers between base 2, 8, 10, and 16. Support for signed numbers is included.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: "Base Calc",
+      activeId: 'converters',
+      rootPath: '../../',
+      tool: {
+        id: "base_calc",
+        name: "Base Calc",
+        url: "MainScreen/Converter/base_calc.html",
+        icon: "🔢",
+        sub: "Hex, Dec, Bin, Oct"
+      }
+    });
+
+    function clearFields() {
+      document.getElementById('numInput').value = '';
+      document.getElementById('resHex').innerText = '-';
+      document.getElementById('resDec').innerText = '-';
+      document.getElementById('resOct').innerText = '-';
+      document.getElementById('resBin').innerText = '-';
+    }
+
+    function calculateBases() {
+      const rawVal = document.getElementById('numInput').value.trim();
+      const base = parseInt(document.getElementById('baseSelect').value);
+
+      if(!rawVal) {
+        alert("Please enter a value.");
+        return;
+      }
+
+      const isNegative = rawVal.startsWith('-');
+      const cleanStr = isNegative ? rawVal.substring(1) : rawVal;
+
+      let decVal;
+      try {
+        if (base === 16) decVal = parseInt(cleanStr, 16);
+        else if (base === 10) decVal = parseInt(cleanStr, 10);
+        else if (base === 8) decVal = parseInt(cleanStr, 8);
+        else if (base === 2) decVal = parseInt(cleanStr, 2);
+      } catch(e) {
+        decVal = NaN;
+      }
+
+      if(isNaN(decVal)) {
+        alert("Invalid input for the selected base.");
+        return;
+      }
+
+      const sign = isNegative ? "-" : "";
+      document.getElementById('resHex').innerText = sign + decVal.toString(16).toUpperCase();
+      document.getElementById('resDec').innerText = sign + decVal.toString(10);
+      document.getElementById('resOct').innerText = sign + decVal.toString(8);
+      document.getElementById('resBin').innerText = sign + decVal.toString(2);
+    }
+  </script>
+</body>
+</html>
+/body>
+</html>

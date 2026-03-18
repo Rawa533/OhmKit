@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | LED Resistor</title>
+  <meta name="description" content="Calculate the required resistor for your LED circuits - OhmKit Engineering Toolkit.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | LED Resistor">
+  <meta property="og:description" content="Calculate the required resistor for your LED circuits - OhmKit Engineering Toolkit.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | LED Resistor">
+  <meta property="twitter:description" content="Calculate the required resistor for your LED circuits - OhmKit Engineering Toolkit.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .tool-container {
+      padding: var(--spacing-lg);
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <div class="tool-container animate-slide">
+        <div class="card" style="margin-bottom: var(--spacing-xl); cursor: default;">
+          <p style="color: var(--text-muted); font-size: 14px;">Calculate the series resistor needed to safely power an LED.</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Supply Voltage (Vs) — Volts</label>
+          <input type="number" id="inputVs" class="input-field" placeholder="e.g. 9" step="any">
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label">LED Forward Voltage (Vf) — Volts</label>
+          <input type="number" id="inputVf" class="input-field" placeholder="e.g. 2.2" step="any">
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label">LED Forward Current (If) — mA</label>
+          <input type="number" id="inputIf" class="input-field" placeholder="e.g. 20" step="any">
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+          <button class="btn btn-outline" onclick="clearFields()" style="flex:1;">Clear</button>
+          <button class="btn btn-primary" onclick="calculate()" style="flex:2;">Calculate Resistor</button>
+        </div>
+
+        <div class="result-container">
+          <div class="result-header">Results</div>
+          <div class="result-row">
+            <span class="result-label">Resistor Value (R)</span>
+            <span class="result-value" id="resR">-</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Power Dissipation (P)</span>
+            <span class="result-value" id="resP">-</span>
+          </div>
+        </div>
+
+        <div class="formula-container" style="text-align: center;">
+          <div class="formula-title">Formulas</div>
+          <strong>R</strong> = (V<sub>s</sub> - V<sub>f</sub>) / I<sub>f</sub><br>
+          <strong>P</strong> = (V<sub>s</sub> - V<sub>f</sub>) × I<sub>f</sub>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: "LED Resistor",
+      activeId: 'calculators',
+      rootPath: '../../',
+      tool: {
+        id: "LED_resistor",
+        name: "LED Resistor",
+        url: "MainScreen/calculator/LED_resistor.html",
+        icon: "💡",
+        sub: "Calculate limiting resistor"
+      }
+    });
+
+    function clearFields() {
+      document.getElementById('inputVs').value = '';
+      document.getElementById('inputVf').value = '';
+      document.getElementById('inputIf').value = '';
+      document.getElementById('resR').innerText = '-';
+      document.getElementById('resP').innerText = '-';
+    }
+
+    function calculate() {
+      let vs = parseFloat(document.getElementById('inputVs').value);
+      let vf = parseFloat(document.getElementById('inputVf').value);
+      let if_mA = parseFloat(document.getElementById('inputIf').value);
+
+      if (isNaN(vs) || isNaN(vf) || isNaN(if_mA)) {
+        alert("Please enter all three values.");
+        return;
+      }
+
+      if (vs <= vf) {
+        alert("Supply voltage must be greater than LED forward voltage.");
+        return;
+      }
+
+      if (if_mA <= 0) {
+        alert("Current must be greater than zero.");
+        return;
+      }
+
+      let i_A = if_mA / 1000;
+      let r = (vs - vf) / i_A;
+      let p = (vs - vf) * i_A;
+
+      document.getElementById('resR').innerText = r.toFixed(2).replace(/\.?0+$/, '') + ' Ω';
+      document.getElementById('resP').innerText = (p * 1000).toFixed(2).replace(/\.?0+$/, '') + ' mW';
+    }
+  </script>
+</body>
+</html>

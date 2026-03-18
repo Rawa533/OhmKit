@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | Current Divider</title>
+  <meta name="description" content="Calculate current flow through parallel resistor branches - OhmKit Engineering Toolkit.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | Current Divider">
+  <meta property="og:description" content="Calculate current flow through parallel resistor branches - OhmKit Engineering Toolkit.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | Current Divider">
+  <meta property="twitter:description" content="Calculate current flow through parallel resistor branches - OhmKit Engineering Toolkit.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .tool-container {
+      padding: var(--spacing-lg);
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <div class="tool-container animate-slide">
+        <div class="card" style="margin-bottom: var(--spacing-xl); cursor: default;">
+          <p style="color: var(--text-muted); font-size: 14px;">Calculate branch currents for a two-resistor parallel current divider circuit.</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Total Current (Itotal) — Amperes</label>
+          <input type="number" id="inputI" class="input-field" placeholder="e.g. 5" step="any">
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label">Resistor 1 (R1) — Ohms (Ω)</label>
+          <input type="number" id="inputR1" class="input-field" placeholder="e.g. 10" step="any">
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label">Resistor 2 (R2) — Ohms (Ω)</label>
+          <input type="number" id="inputR2" class="input-field" placeholder="e.g. 20" step="any">
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+          <button class="btn btn-outline" onclick="clearFields()" style="flex:1;">Clear</button>
+          <button class="btn btn-primary" onclick="calculate()" style="flex:2;">Calculate Branch Currents</button>
+        </div>
+
+        <div class="result-container">
+          <div class="result-header">Branch Currents</div>
+          <div class="result-row">
+            <span class="result-label">Current through R1 (I_R1)</span>
+            <span class="result-value" id="resI1">-</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Current through R2 (I_R2)</span>
+            <span class="result-value" id="resI2">-</span>
+          </div>
+        </div>
+
+        <div class="formula-container" style="text-align: center;">
+          <div class="formula-title">Formulas</div>
+          <strong>I<sub>R1</sub></strong> = I<sub>total</sub> × [ R2 / (R1 + R2) ]<br>
+          <strong>I<sub>R2</sub></strong> = I<sub>total</sub> × [ R1 / (R1 + R2) ]
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: "Current Divider",
+      activeId: 'calculators',
+      rootPath: '../../',
+      tool: {
+        id: "current_divider",
+        name: "Current Divider",
+        url: "MainScreen/calculator/current_divider.html",
+        icon: "〰️",
+        sub: "Parallel branch current"
+      }
+    });
+
+    function clearFields() {
+      document.getElementById('inputI').value = '';
+      document.getElementById('inputR1').value = '';
+      document.getElementById('inputR2').value = '';
+      document.getElementById('resI1').innerText = '-';
+      document.getElementById('resI2').innerText = '-';
+    }
+
+    function calculate() {
+      let itotal = parseFloat(document.getElementById('inputI').value);
+      let r1 = parseFloat(document.getElementById('inputR1').value);
+      let r2 = parseFloat(document.getElementById('inputR2').value);
+
+      if (isNaN(itotal) || isNaN(r1) || isNaN(r2)) {
+        alert("Please enter all three values.");
+        return;
+      }
+
+      if (r1 + r2 === 0) {
+        alert("Resistance sum cannot be zero.");
+        return;
+      }
+
+      let i1 = itotal * (r2 / (r1 + r2));
+      let i2 = itotal * (r1 / (r1 + r2));
+
+      document.getElementById('resI1').innerText = i1.toFixed(4).replace(/\.?0+$/, '') + ' A';
+      document.getElementById('resI2').innerText = i2.toFixed(4).replace(/\.?0+$/, '') + ' A';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | Reactance Calc</title>
+  <meta name="description" content="Calculate capacitive and inductive reactance - OhmKit Engineering Toolkit.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | Reactance Calc">
+  <meta property="og:description" content="Calculate capacitive and inductive reactance - OhmKit Engineering Toolkit.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | Reactance Calc">
+  <meta property="twitter:description" content="Calculate capacitive and inductive reactance - OhmKit Engineering Toolkit.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .tool-container {
+      padding: var(--spacing-lg);
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .section-title {
+      color: var(--primary);
+      margin-top: var(--spacing-md);
+      margin-bottom: var(--spacing-xs);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <div class="tool-container animate-slide">
+        <div class="card" style="margin-bottom: var(--spacing-xl); cursor: default;">
+          <p style="color: var(--text-muted); font-size: 14px;">Calculate capacitive and inductive reactance based on frequency, capacitance, and inductance.</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Frequency (f) - Hz</label>
+          <input type="number" id="freq" class="input-field" placeholder="e.g. 1000" step="any">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Capacitance (C) - µF (Optional)</label>
+          <input type="number" id="cap" class="input-field" placeholder="e.g. 1" step="any">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Inductance (L) - mH (Optional)</label>
+          <input type="number" id="ind" class="input-field" placeholder="e.g. 10" step="any">
+        </div>
+
+        <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+          <button class="btn btn-outline" onclick="clearFields()" style="flex:1;">Clear</button>
+          <button class="btn btn-primary" onclick="calculateReactance()" style="flex:2;">Calculate</button>
+        </div>
+
+        <div class="result-container">
+          <div class="result-header">Results</div>
+          
+          <div class="section-title">Capacitive Reactance</div>
+          <div class="result-row">
+            <span class="result-label">Xc</span>
+            <span class="result-value" id="xc">- Ω</span>
+          </div>
+          
+          <div class="section-title" style="margin-top: var(--spacing-lg);">Inductive Reactance</div>
+          <div class="result-row">
+            <span class="result-label">Xl</span>
+            <span class="result-value" id="xl">- Ω</span>
+          </div>
+        </div>
+
+        <div class="formula-container">
+          <div class="formula-title">Formulas Used</div>
+          <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+            Xc = 1 / (2π × f × C)<br>
+            Xl = 2π × f × L
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: "Reactance Calc",
+      activeId: 'circuits',
+      rootPath: '../../',
+      tool: {
+        id: "reactance_calc",
+        name: "Reactance Calc",
+        url: "MainScreen/Circuit/Reactance.html",
+        icon: "⚡",
+        sub: "Capacitive & Inductive"
+      }
+    });
+
+    function clearFields() {
+      document.getElementById('freq').value = '';
+      document.getElementById('cap').value = '';
+      document.getElementById('ind').value = '';
+      document.getElementById('xc').innerText = '- Ω';
+      document.getElementById('xl').innerText = '- Ω';
+    }
+
+    function calculateReactance() {
+      const f = parseFloat(document.getElementById('freq').value);
+      const C = parseFloat(document.getElementById('cap').value);
+      const L = parseFloat(document.getElementById('ind').value);
+
+      if(isNaN(f) || f <= 0) {
+        alert("Please enter a valid positive Frequency.");
+        return;
+      }
+
+      if (!isNaN(C) && C > 0) {
+        let C_Farad = C * 1e-6;
+        let xc = 1 / (2 * Math.PI * f * C_Farad);
+        document.getElementById('xc').innerText = formatValue(xc) + "Ω";
+      } else {
+        document.getElementById('xc').innerText = "- Ω";
+      }
+
+      if (!isNaN(L) && L > 0) {
+        let L_Henry = L * 1e-3;
+        let xl = 2 * Math.PI * f * L_Henry;
+        document.getElementById('xl').innerText = formatValue(xl) + "Ω";
+      } else {
+        document.getElementById('xl').innerText = "- Ω";
+      }
+    }
+
+    function formatValue(value) {
+      if (value >= 1e6) {
+          return (value / 1e6).toFixed(2) + " M";
+      } else if (value >= 1e3) {
+          return (value / 1e3).toFixed(2) + " k";
+      } else {
+          return value.toFixed(2) + " ";
+      }
+    }
+  </script>
+</body>
+</html>

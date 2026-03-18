@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | Datasheets</title>
+  <meta name="description" content="Search and view component datasheets and documentation - OhmKit Engineering Toolkit.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | Datasheets">
+  <meta property="og:description" content="Search and view component datasheets and documentation - OhmKit Engineering Toolkit.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | Datasheets">
+  <meta property="twitter:description" content="Search and view component datasheets and documentation - OhmKit Engineering Toolkit.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .list-container {
+      padding: var(--spacing-lg);
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .search-container {
+      margin-bottom: var(--spacing-xl);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--bg-main);
+      padding: var(--spacing-md) 0;
+    }
+    .ds-item {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all var(--transition-fast);
+    }
+    .ds-item:hover {
+      border-color: var(--primary);
+      transform: translateX(4px);
+    }
+    .ds-info {
+      flex: 1;
+      margin-right: var(--spacing-md);
+    }
+    .ds-title {
+      color: var(--primary);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .ds-desc {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .pdf-link-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      padding: 8px 24px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-cond);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+    .pdf-link-btn:hover {
+      background: var(--primary);
+      color: #000;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <div class="list-container animate-slide">
+        <div class="search-container">
+          <input type="text" class="input-field" id="searchDs" placeholder="Search components or keywords..." style="margin-bottom: 0;">
+        </div>
+        
+        <div id="dsList">
+          <div class="ds-item" data-name="Electricity & Magnetism — Core Concepts">
+            <div class="ds-info">
+              <div class="ds-title">Electricity & Magnetism</div>
+              <div class="ds-desc">Key formulas and concepts: current, resistance, power, and magnetism.</div>
+            </div>
+            <button class="pdf-link-btn" onclick="window.location.href='PDF/CoreConcepts.pdf'">PDF</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: "Datasheets",
+      activeId: 'references',
+      rootPath: '../../',
+      tool: {
+        id: "datasheets",
+        name: "Datasheets",
+        url: "MainScreen/Reference/DataSheet.html",
+        icon: "📄",
+        sub: "PDF component library"
+      }
+    });
+
+    document.getElementById('searchDs').addEventListener('input', function(e) {
+      const filter = e.target.value.toLowerCase();
+      const items = document.querySelectorAll('.ds-item');
+      items.forEach(item => {
+        const text = (item.getAttribute('data-name') + item.querySelector('.ds-desc').innerText).toLowerCase();
+        item.style.display = text.includes(filter) ? 'flex' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

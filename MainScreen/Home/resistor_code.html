@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OhmKit | Resistor Code</title>
+  <meta name="description" content="Decode resistor color bands and identify resistance values - OhmKit Engineering Toolkit.">
+  
+  <!-- SEO & Link Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rawa.github.io/OhmKit-web/">
+  <meta property="og:title" content="OhmKit | Resistor Code">
+  <meta property="og:description" content="Decode resistor color bands and identify resistance values - OhmKit Engineering Toolkit.">
+  <meta property="og:image" content="../../img/LinkPreview.jpg">
+
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:title" content="OhmKit | Resistor Code">
+  <meta property="twitter:description" content="Decode resistor color bands and identify resistance values - OhmKit Engineering Toolkit.">
+  <meta property="twitter:image" content="../../img/LinkPreview.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <style>
+    .tool-container {
+      padding: var(--spacing-lg);
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .band-dropdown.black { background: #000; color: #fff; }
+    .band-dropdown.brown { background: #8B4513; color: #fff; }
+    .band-dropdown.red { background: #FF0000; color: #fff; }
+    .band-dropdown.orange { background: #FFA500; color: #000; }
+    .band-dropdown.yellow { background: #FFFF00; color: #000; }
+    .band-dropdown.green { background: #008000; color: #fff; }
+    .band-dropdown.blue { background: #0000FF; color: #fff; }
+    .band-dropdown.violet { background: #EE82EE; color: #000; }
+    .band-dropdown.gray { background: #808080; color: #fff; }
+    .band-dropdown.white { background: #FFFFFF; color: #000; }
+    .band-dropdown.gold { background: #FFD700; color: #000; }
+    .band-dropdown.silver { background: #C0C0C0; color: #000; }
+    
+    select.input-field {
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <div class="tool-container animate-slide">
+        <div class="card" style="margin-bottom: var(--spacing-xl); cursor: default;">
+          <p style="color: var(--text-muted); font-size: 14px;">Translate resistor color bands into resistance value and tolerance.</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Band 1 (1st Digit)</label>
+          <select id="band1" class="input-field band-dropdown brown" onchange="updateSelectColor(this)">
+            <option value="0" class="black">Black (0)</option>
+            <option value="1" class="brown" selected>Brown (1)</option>
+            <option value="2" class="red">Red (2)</option>
+            <option value="3" class="orange">Orange (3)</option>
+            <option value="4" class="yellow">Yellow (4)</option>
+            <option value="5" class="green">Green (5)</option>
+            <option value="6" class="blue">Blue (6)</option>
+            <option value="7" class="violet">Violet (7)</option>
+            <option value="8" class="gray">Gray (8)</option>
+            <option value="9" class="white">White (9)</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Band 2 (2nd Digit)</label>
+          <select id="band2" class="input-field band-dropdown black" onchange="updateSelectColor(this)">
+            <option value="0" class="black" selected>Black (0)</option>
+            <option value="1" class="brown">Brown (1)</option>
+            <option value="2" class="red">Red (2)</option>
+            <option value="3" class="orange">Orange (3)</option>
+            <option value="4" class="yellow">Yellow (4)</option>
+            <option value="5" class="green">Green (5)</option>
+            <option value="6" class="blue">Blue (6)</option>
+            <option value="7" class="violet">Violet (7)</option>
+            <option value="8" class="gray">Gray (8)</option>
+            <option value="9" class="white">White (9)</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Band 3 (Multiplier)</label>
+          <select id="band3" class="input-field band-dropdown red" onchange="updateSelectColor(this)">
+            <option value="1" class="black">Black (x1)</option>
+            <option value="10" class="brown">Brown (x10)</option>
+            <option value="100" class="red" selected>Red (x100)</option>
+            <option value="1000" class="orange">Orange (x1k)</option>
+            <option value="10000" class="yellow">Yellow (x10k)</option>
+            <option value="100000" class="green">Green (x100k)</option>
+            <option value="1000000" class="blue">Blue (x1M)</option>
+            <option value="10000000" class="violet">Violet (x10M)</option>
+            <option value="0.1" class="gold">Gold (x0.1)</option>
+            <option value="0.01" class="silver">Silver (x0.01)</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Band 4 (Tolerance)</label>
+          <select id="band4" class="input-field band-dropdown gold" onchange="updateSelectColor(this)">
+            <option value="1" class="brown">Brown (±1%)</option>
+            <option value="2" class="red">Red (±2%)</option>
+            <option value="0.5" class="green">Green (±0.5%)</option>
+            <option value="0.25" class="blue">Blue (±0.25%)</option>
+            <option value="0.1" class="violet">Violet (±0.1%)</option>
+            <option value="0.05" class="gray">Gray (±0.05%)</option>
+            <option value="5" class="gold" selected>Gold (±5%)</option>
+            <option value="10" class="silver">Silver (±10%)</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" onclick="calculate()" style="width: 100%; margin-bottom: var(--spacing-xl);">Translate Colors</button>
+
+        <div class="result-container">
+          <div class="result-header">Calculation Results</div>
+          <div class="result-row">
+            <span class="result-label">Resistance Value</span>
+            <span class="result-value" id="resVal">-</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/layout.js"></script>
+  <script>
+    LayoutManager.init({
+      title: "Resistor Code",
+      activeId: 'home',
+      rootPath: '../../',
+      noFavorite: true,
+      tool: {
+        id: "resistor_code",
+        name: "Resistor Code",
+        url: "MainScreen/Home/resistor_code.html",
+        icon: "🎨",
+        sub: "Color → Ohms"
+      }
+    });
+
+    function updateSelectColor(select) {
+      select.className = "input-field band-dropdown " + select.options[select.selectedIndex].className;
+    }
+
+    function formatResistance(ohms) {
+      if (ohms >= 1e6) {
+        return (ohms / 1e6).toFixed(2).replace(/\.?0+$/, '') + " MΩ";
+      } else if (ohms >= 1e3) {
+        return (ohms / 1e3).toFixed(2).replace(/\.?0+$/, '') + " kΩ";
+      } else {
+        return ohms.toFixed(2).replace(/\.?0+$/, '') + " Ω";
+      }
+    }
+
+    function calculate() {
+      const b1 = parseInt(document.getElementById('band1').value);
+      const b2 = parseInt(document.getElementById('band2').value);
+      const mult = parseFloat(document.getElementById('band3').value);
+      const tol = document.getElementById('band4').value;
+
+      const ohms = ((b1 * 10) + b2) * mult;
+      const formatted = formatResistance(ohms);
+      document.getElementById('resVal').innerText = formatted + " ± " + tol + "%";
+    }
+
+    calculate();
+  </script>
+</body>
+</html>
